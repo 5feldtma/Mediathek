@@ -354,7 +354,7 @@ public class VerleihServiceImpl extends AbstractObservableService
 	        boolean result = true;
 	        for (Medium medium : medien)
 	        {
-	            if (!_vormerkkarten.get(medium).istVormerkbar(kunde))
+	            if (_vormerkkarten.get(medium) != null && !_vormerkkarten.get(medium).istVormerkbar(kunde))
 	            {
 	                result = false;
 	                //TODO Nachricht nötig in UI?!
