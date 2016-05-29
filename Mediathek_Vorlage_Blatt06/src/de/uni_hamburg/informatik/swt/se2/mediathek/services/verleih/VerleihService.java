@@ -57,7 +57,29 @@ public interface VerleihService extends ObservableService
      * @require medienImBestand(medien)
      */
     boolean istVerleihenMoeglich(Kunde kunde, List<Medium> medien);
+    
+    /**
+     * TODO
+     * @param kunde
+     * @param medien
+     * @return
+     */
+    boolean istVormerkenMöglich(Kunde kunde, List<Medium> medien);
 
+    /**
+     * TODO
+     * @param kunde
+     * @param medien
+     */
+    void merkeVor(Kunde kunde, List<Medium> medien);
+    
+    /**
+     * TODO
+     * @param kunde
+     * @param medien
+     */
+    void entferneVormerkungen(Kunde kunde, List<Medium> medien);
+    
     /**
      * Liefert den Entleiher des angegebenen Mediums.
      * 
@@ -93,6 +115,15 @@ public interface VerleihService extends ObservableService
      * @ensure result != null
      */
     List<Verleihkarte> getVerleihkarten();
+    
+    /**
+     * @return Eine Listenkopie aller Vormerkkarten. Für jedes vorgemerkte
+     *         Medium existiert eine Vormerkkarte. Ist kein Medium vorgemerkt,
+     *         wird eine leere Liste zurückgegeben.
+     * 
+     * @ensure result != null
+     */
+    List<Verleihkarte> getVormerkkarten();
 
     /**
      * Nimmt zuvor ausgeliehene Medien zurück. Die entsprechenden Verleihkarten
@@ -133,6 +164,13 @@ public interface VerleihService extends ObservableService
     boolean sindAlleNichtVerliehen(List<Medium> medien);
 
     /**
+     * TODO
+     * @param medien
+     * @return
+     */
+    boolean sindAlleVormerkbar(Kunde kunde, List<Medium> medien);
+    
+    /**
      * Prüft ob alle angegebenen Medien verliehen sind.
      * 
      * @param medien Eine Liste von Medien.
@@ -167,6 +205,14 @@ public interface VerleihService extends ObservableService
      * @require mediumImBestand(medium)
      */
     boolean istVerliehenAn(Kunde kunde, Medium medium);
+    
+    /**
+     * TODO
+     * @param kunde
+     * @param medium
+     * @return
+     */
+    boolean istVomKundenVorgemerkt(Kunde kunde, Medium medium);
 
     /**
      * Prüft ob der angebene Kunde existiert. Ein Kunde existiert, wenn er im
