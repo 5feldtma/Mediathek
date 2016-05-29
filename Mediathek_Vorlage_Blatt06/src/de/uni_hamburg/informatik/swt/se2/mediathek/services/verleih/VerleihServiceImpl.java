@@ -346,9 +346,8 @@ public class VerleihServiceImpl extends AbstractObservableService
 	}
 
 	@Override
-	public List<Verleihkarte> getVormerkkarten() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Vormerkkarte> getVormerkkarten() {
+		return new ArrayList<Vormerkkarte>(_vormerkkarten.values());
 	}
 
 	@Override
