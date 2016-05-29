@@ -305,4 +305,63 @@ public class VerleihServiceImpl extends AbstractObservableService
         return result;
     }
 
+	@Override
+	public void merkeVor(Kunde kunde, List<Medium> medien) {
+		if(istVormerkenMöglich(kunde, medien))
+		{
+			for (Medium medium : medien) {
+				_vormerkkarten.get(medium).merkeVor(kunde);
+			}
+		}
+		
+	}
+
+	@Override
+	public void entferneVormerkungen(Kunde kunde, List<Medium> medien) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean istVomKundenVorgemerkt(Kunde kunde, Medium medium) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean istVormerkenMöglich(Kunde kunde, List<Medium> medien) {
+		 assert kundeImBestand(
+	                kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
+	        assert medienImBestand(
+	                medien) : "Vorbedingung verletzt: medienImBestand(medien)";
+
+	        return sindAlleVormerkbar(kunde, medien);
+
+	}
+
+	@Override
+	public List<Verleihkarte> getVormerkkarten() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean sindAlleVormerkbar(Kunde kunde, List<Medium> medien) {
+		assert kundeImBestand(
+                kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
+		 assert medienImBestand(
+	                medien) : "Vorbedingung verletzt: medienImBestand(medien)";
+	        boolean result = true;
+	        for (Medium medium : medien)
+	        {
+	            if (!_vormerkkarten.get(medium).istVormerkbar(kunde))
+	            {
+	                result = false;
+	                //TODO Nachricht nötig in UI?!
+	                System.out.println(medium.getTitel() + " ist nicht vormerkbar.");
+	            }
+	        }
+	        return result;
+	}
+
 }
