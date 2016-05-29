@@ -324,14 +324,24 @@ public class VerleihServiceImpl extends AbstractObservableService
 
 	@Override
 	public void entferneVormerkungen(Kunde kunde, List<Medium> medien) {
-		// TODO Auto-generated method stub
-		
+		for (Medium medium : medien) {
+			if(istVomKundenVorgemerkt(kunde, medium))
+			{
+				_vormerkkarten.get(medium).entferneVormerkung(kunde);
+			}
+			else
+			{
+				// TODO Anzeigen? Verhindern?
+				System.out.println("Medium " + medium.getTitel() + " von " + kunde.getVorname() + " " +  kunde.getNachname() + " nicht vorgemerkt.");
+			}
+		}
+	
 	}
 
 	@Override
+	// TODO überflüssig? eine der beiden entfernen?
 	public boolean istVomKundenVorgemerkt(Kunde kunde, Medium medium) {
-		// TODO Auto-generated method stub
-		return false;
+		return _vormerkkarten.get(medium).istVonKundeVorgemerkt(kunde);
 	}
 
 	@Override
