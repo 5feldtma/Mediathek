@@ -310,6 +310,12 @@ public class VerleihServiceImpl extends AbstractObservableService
 		if(istVormerkenMöglich(kunde, medien))
 		{
 			for (Medium medium : medien) {
+				if (_vormerkkarten.get(medium) == null)
+				{
+					// TODO gut so mit deklaration etc?
+					Vormerkkarte neueKarte = new Vormerkkarte(kunde, medium);
+					_vormerkkarten.put(medium, neueKarte);
+				}
 				_vormerkkarten.get(medium).merkeVor(kunde);
 			}
 		}
