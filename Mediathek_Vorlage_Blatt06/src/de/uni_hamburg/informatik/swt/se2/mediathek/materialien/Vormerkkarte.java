@@ -56,6 +56,20 @@ public class Vormerkkarte {
 	{
 		return _vormerkliste.get(0);
 	}
+	
+	
+	/**
+	 * Gibt Vormerker am Listenindex zurück
+	 * 
+	 * @param index der Index des Vormerkers in der Liste
+	 * 
+	 * @return Kunde an Position Index - 1 in der Liste.
+	 */
+	public Kunde getBestimmtenVormerker(int index)
+	{
+		// TODO +1?
+		return _vormerkliste.get(index-1);
+	}
 
 	/**
 	 * Gibt eine String-Darstellung der Vormerkkarte (enhält Zeilenumbrüche)
