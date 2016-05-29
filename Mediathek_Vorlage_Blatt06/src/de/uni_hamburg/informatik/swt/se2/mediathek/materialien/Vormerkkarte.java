@@ -123,16 +123,11 @@ public class Vormerkkarte {
 	}
 
 	public void merkeVor(Kunde vormerker) {
-		if (listeNichtVoll()) {
-			if (!istVonKundeVorgemerkt(vormerker)) {
+		if (istVormerkbar(vormerker)) {
 				_vormerkliste.add(vormerker);
-			} else {
-				// TODO als Fenster. In den Service bzw. Werkzeug für die UI?
-				System.out.println("Kunde hat dieses Medium schon vorgemerkt");
-			}
 		} else {
 			// TODO als Fenster. In den Service bzw. Werkzeug für die UI?
-			System.out.println("Vormerkliste ist voll");
+			System.out.println("Kann nicht vormerken");
 		}
 	}
 	
@@ -155,9 +150,19 @@ public class Vormerkkarte {
 		return _vormerkliste.contains(vormerker);
 	}
 
+	/**
+	 * TODO
+	 * @return
+	 */
 	public boolean listeNichtVoll() {
 		return _vormerkliste.size() != vormerkMaximum;
 	}
+	
+	public boolean istVormerkbar(Kunde vormerker)
+	{
+		return !istVonKundeVorgemerkt(vormerker) && listeNichtVoll();
+	}
+	
 
 	/// TODO neue equals und hash methode?
 	
