@@ -75,7 +75,7 @@ public class Vormerkkarte {
 	public Kunde getBestimmtenVormerker(int index)
 	{
 		// TODO +1?
-		if (_vormerkliste.size() <= index-1) 
+		if (_vormerkliste.size() > index-1) 
 		{
 			return _vormerkliste.get(index-1);
 		}
