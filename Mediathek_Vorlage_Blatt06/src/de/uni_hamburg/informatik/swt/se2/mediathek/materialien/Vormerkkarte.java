@@ -146,7 +146,7 @@ public class Vormerkkarte {
 	 * 
 	 * @return Ist Medium vormerkbar
 	 */
-	public boolean istVonKundeVorgemerkt(Kunde vormerker) {
+	private boolean istVonKundeVorgemerkt(Kunde vormerker) {
 		return _vormerkliste.contains(vormerker);
 	}
 
@@ -154,7 +154,7 @@ public class Vormerkkarte {
 	 * TODO
 	 * @return
 	 */
-	public boolean listeNichtVoll() {
+	private boolean listeNichtVoll() {
 		return _vormerkliste.size() != vormerkMaximum;
 	}
 	
