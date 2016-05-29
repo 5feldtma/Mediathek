@@ -209,7 +209,9 @@ public class VerleihServiceImpl extends AbstractObservableService
         assert ausleihDatum != null : "Vorbedingung verletzt: ausleihDatum != null";
         assert istVerleihenMoeglich(kunde,
                 medien) : "Vorbedingung verletzt:  istVerleihenMoeglich(kunde, medien)";
-
+        assert istBeiAllenErsterVormerker(kunde, medien) : 
+        	"Vorbedingung verletzt: istBeiAllenErsterVormerker(kunde, medien)";
+        
         for (Medium medium : medien)
         {
             Verleihkarte verleihkarte = new Verleihkarte(kunde, medium,
@@ -218,6 +220,11 @@ public class VerleihServiceImpl extends AbstractObservableService
             _verleihkarten.put(medium, verleihkarte);
             _protokollierer.protokolliere(
                     VerleihProtokollierer.EREIGNIS_AUSLEIHE, verleihkarte);
+            //TODO protokollieren? nullpointer bei keiner vormerkung?
+            if (_vormerkkarten.get(medium).getErstenVormerker().equals(kunde))
+            {
+            	_vormerkkarten.get(medium).entferneVormerkung(kunde);
+            }
         }
         // XXX Was passiert wenn das Protokollieren mitten in der Schleife
         // schief geht? informiereUeberAenderung in einen finally Block?
@@ -343,6 +350,34 @@ public class VerleihServiceImpl extends AbstractObservableService
 	public boolean istVomKundenVorgemerkt(Kunde kunde, Medium medium) {
 		return _vormerkkarten.get(medium).istVonKundeVorgemerkt(kunde);
 	}
+	
+	// TODO
+	/**
+	 *
+	 * @param kunde
+	 * @param medium
+	 * @return
+	 */
+	
+	private boolean istBeiAllenErsterVormerker(Kunde kunde, List<Medium> medien)
+	{
+		boolean result = true;
+		for (Medium medium : medien) {
+			if (!istErsterVormerker(kunde,medium))
+			{
+				result = false;			
+			}
+		}
+		return result;
+	}
+	
+	private boolean istErsterVormerker(Kunde kunde, Medium medium)
+	{
+		// TODO in andere Methoden trennen?
+		Kunde ersterVormerker =_vormerkkarten.get(medium).getErstenVormerker();
+		return ersterVormerker == null || ersterVormerker.equals(kunde);
+	}
+	
 
 	@Override
 	public boolean istVormerkenMöglich(Kunde kunde, List<Medium> medien) {
