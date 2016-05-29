@@ -54,7 +54,14 @@ public class Vormerkkarte {
 	
 	public Kunde getErstenVormerker()
 	{
-		return _vormerkliste.get(0);
+		if (_vormerkliste.size() != 0) 
+		{
+			return _vormerkliste.get(0);
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	
@@ -68,7 +75,14 @@ public class Vormerkkarte {
 	public Kunde getBestimmtenVormerker(int index)
 	{
 		// TODO +1?
-		return _vormerkliste.get(index-1);
+		if (_vormerkliste.size() <= index-1) 
+		{
+			return _vormerkliste.get(index-1);
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	/**
