@@ -146,7 +146,7 @@ public class Vormerkkarte {
 	 * 
 	 * @return Ist Medium vormerkbar
 	 */
-	private boolean istVonKundeVorgemerkt(Kunde vormerker) {
+	public boolean istVonKundeVorgemerkt(Kunde vormerker) {
 		return _vormerkliste.contains(vormerker);
 	}
 
