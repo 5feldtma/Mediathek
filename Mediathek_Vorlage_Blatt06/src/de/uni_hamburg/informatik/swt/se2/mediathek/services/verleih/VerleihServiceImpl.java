@@ -112,8 +112,9 @@ public class VerleihServiceImpl extends AbstractObservableService
                 kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
         assert medienImBestand(
                 medien) : "Vorbedingung verletzt: medienImBestand(medien)";
+                
 
-        return sindAlleNichtVerliehen(medien);
+        return sindAlleNichtVerliehen(medien) && darfAlleAusleihen(kunde, medien);
     }
 
     @Override
@@ -209,8 +210,6 @@ public class VerleihServiceImpl extends AbstractObservableService
         assert ausleihDatum != null : "Vorbedingung verletzt: ausleihDatum != null";
         assert istVerleihenMoeglich(kunde,
                 medien) : "Vorbedingung verletzt:  istVerleihenMoeglich(kunde, medien)";
-        assert istBeiAllenErsterVormerker(kunde, medien) : 
-        	"Vorbedingung verletzt: istBeiAllenErsterVormerker(kunde, medien)";
         
         for (Medium medium : medien)
         {
@@ -359,11 +358,11 @@ public class VerleihServiceImpl extends AbstractObservableService
 	 * @return
 	 */
 	
-	private boolean istBeiAllenErsterVormerker(Kunde kunde, List<Medium> medien)
+	private boolean darfAlleAusleihen(Kunde kunde, List<Medium> medien)
 	{
 		boolean result = true;
 		for (Medium medium : medien) {
-			if (!istErsterVormerker(kunde,medium))
+			if (!darfAusleihen(kunde,medium))
 			{
 				result = false;			
 			}
@@ -371,9 +370,8 @@ public class VerleihServiceImpl extends AbstractObservableService
 		return result;
 	}
 	
-	private boolean istErsterVormerker(Kunde kunde, Medium medium)
+	private boolean darfAusleihen(Kunde kunde, Medium medium)
 	{
-		// TODO in andere Methoden trennen?
 		Kunde ersterVormerker =_vormerkkarten.get(medium).getErstenVormerker();
 		return ersterVormerker == null || ersterVormerker.equals(kunde);
 	}
