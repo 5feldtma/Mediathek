@@ -1,6 +1,7 @@
 package de.uni_hamburg.informatik.swt.se2.mediathek.materialien;
 
-import java.util.ArrayList;
+
+import java.util.LinkedList;
 import java.util.List;
 
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
@@ -29,7 +30,7 @@ public class Vormerkkarte {
 		assert vormerker != null : "Vorbedingung verletzt: vormerker != null";
 		assert medium != null : "Vorbedingung verletzt: medium != null";
 
-		_vormerkliste = new ArrayList<Kunde>();
+		_vormerkliste = new LinkedList<Kunde>();
 		_vormerkliste.add(vormerker);
 		_medium = medium;
 
@@ -135,7 +136,6 @@ public class Vormerkkarte {
 	{
 		if(istVonKundeVorgemerkt(vormerker))
 		{
-			// TODO klappt das?
 			_vormerkliste.remove(vormerker);
 		}
 	}
