@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uni_hamburg.informatik.swt.se2.mediathek.fachwerte.Datum;
 import de.uni_hamburg.informatik.swt.se2.mediathek.fachwerte.Kundennummer;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Kunde;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Verleihkarte;
+import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.Vormerkkarte;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.CD;
 import de.uni_hamburg.informatik.swt.se2.mediathek.materialien.medien.Medium;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.ServiceObserver;
@@ -32,6 +34,11 @@ public class VerleihServiceImplTest
     private VerleihService _service;
     private List<Medium> _medienListe;
     private Kunde _vormerkkunde;
+    private List<Kunde> kunden = new ArrayList<>();
+    
+    @Before
+    public void setup(){
+    }
 
     public VerleihServiceImplTest()
     {
@@ -39,6 +46,11 @@ public class VerleihServiceImplTest
         KundenstammService kundenstamm = new KundenstammServiceImpl(
                 new ArrayList<Kunde>());
         _kunde = new Kunde(new Kundennummer(123456), "ich", "du");
+        
+        for (int i=0; i<10; i++){
+            kunden.add(new Kunde(new Kundennummer(i+100000), "Kunde"+i, "Kunde"+i));
+            kundenstamm.fuegeKundenEin(kunden.get(i));
+        }
 
         _vormerkkunde = new Kunde(new Kundennummer(666999), "paul", "panter");
 
@@ -149,5 +161,84 @@ public class VerleihServiceImplTest
                 Collections.singletonList(_medienListe.get(2)), _datum);
         assertFalse(ereignisse[0]);
     }
-
+    
+    @Test
+    public void testMerkeVor() {
+        _service.merkeVor(kunden.get(0), _medienListe);
+        for (Medium m : _medienListe){
+            Vormerkkarte karte = _service.getVormerkkarte(m);
+            assertTrue(_service.getVormerkkarten().contains(karte));
+        }
+    }
+    
+    @Test
+    public void testEntferneVormerkung() {
+        //nicht existierende Vormerkungen
+        _service.entferneVormerkungen(kunden.get(0), _medienListe);
+        
+        //Alle Vormerkungen entfernen
+        _service.merkeVor(kunden.get(0), _medienListe);
+        _service.entferneVormerkungen(kunden.get(0), _medienListe);
+        assertTrue(_service.getVormerkkarten().size() == 0);
+        
+        //Eine von vielen Vormerkungen entfernen
+        _service.merkeVor(kunden.get(1), _medienListe);
+        List<Medium> testMedien = new ArrayList<>();
+        testMedien.add(_medienListe.get(0));
+        _service.entferneVormerkungen(kunden.get(1), testMedien);
+        assertTrue(_service.getVormerkkarten().size() == 0);
+        
+    }
+    
+    @Test
+    public void testVormerkenMöglich() throws ProtokollierException {
+        
+        //Warteliste leer, nicht an Kunde verliehen, nicht vom Kunden vorgemerkt
+        boolean result = _service.istVormerkenMöglich(_vormerkkunde, _medienListe);
+        assertTrue(result);
+        
+        //Warteliste leer, bereits an Kunde verliehen, nicht vom Kunden vorgemerkt
+        _service.verleiheAn(_kunde, _medienListe, Datum.heute());
+        result = _service.istVormerkenMöglich(_kunde, _medienListe);
+        assertFalse(result);
+        
+        //Warteliste.size = 1, nicht an Kunde verliehen, vom Kunden bereits vorgemerkt
+        _service.merkeVor(_vormerkkunde, _medienListe);
+        result = _service.istVormerkenMöglich(_vormerkkunde, _medienListe);
+        assertFalse(result);
+        
+        //Warteliste.size = 1, nicht an Kunde verliehen, nicht vom Kunden vorgemerkt
+        result = _service.istVormerkenMöglich(kunden.get(0), _medienListe);
+        assertTrue(result);
+        
+        //Warteliste.size = 2, nicht an Kunde verliehen, nicht vom Kunden vorgemerkt
+        _service.merkeVor(kunden.get(0), _medienListe);        
+        result = _service.istVormerkenMöglich(kunden.get(1), _medienListe);
+        assertTrue(result);
+        
+        //Warteliste.size = 3, nicht an Kunde verliehen, nicht vom Kunden vorgemerkt
+        _service.merkeVor(kunden.get(1), _medienListe);        
+        result = _service.istVormerkenMöglich(kunden.get(2), _medienListe);
+        assertFalse(result);
+        
+        //Warteliste.size = 3, nicht an Kunde verliehen, bereits vom Kunden vorgemerkt
+        _service.merkeVor(kunden.get(2), _medienListe);        
+        result = _service.istVormerkenMöglich(kunden.get(2), _medienListe);
+        assertFalse(result);
+        
+        
+    }
+    
+    @Test
+    public void istVomKundenVorgemerkt() {
+        assertFalse(_service.istVomKundenVorgemerkt(kunden.get(0), _medienListe.get(0)));
+        
+        _service.merkeVor(kunden.get(0), _medienListe);
+        assertTrue(_service.istVomKundenVorgemerkt(kunden.get(0), _medienListe.get(0)));
+    }
+    
+    @Test
+    public void getVormerkkarten(){
+        
+    }
 }
