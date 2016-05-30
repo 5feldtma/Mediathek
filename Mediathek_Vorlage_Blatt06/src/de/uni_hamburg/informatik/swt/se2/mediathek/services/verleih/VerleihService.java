@@ -119,6 +119,19 @@ public interface VerleihService extends ObservableService
     List<Verleihkarte> getVerleihkarten();
     
     /**
+     * Gibt die Vormerkkarte für das angegebene Medium zurück, oder null wenn
+     * das Medium nicht vorgemerkt ist.
+     * 
+     * @param medium Ein Medium.
+     * @return Die Vormerkkarte für das angegebene Medium.
+     * 
+     * @require medium!=null
+     * 
+     * @ensure (result != null)
+     */
+    Vormerkkarte getVormerkkarte(Medium medium);
+    
+    /**
      * @return Eine Listenkopie aller Vormerkkarten. Für jedes vorgemerkte
      *         Medium existiert eine Vormerkkarte. Ist kein Medium vorgemerkt,
      *         wird eine leere Liste zurückgegeben.

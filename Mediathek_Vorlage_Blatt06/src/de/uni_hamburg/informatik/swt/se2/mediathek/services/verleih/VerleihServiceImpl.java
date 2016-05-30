@@ -72,7 +72,6 @@ public class VerleihServiceImpl extends AbstractObservableService
         assert medienbestand != null : "Vorbedingung verletzt: medienbestand  != null";
         assert initialBestand != null : "Vorbedingung verletzt: initialBestand  != null";
         _verleihkarten = erzeugeVerleihkartenBestand(initialBestand);
-        _vormerkkarten = new HashMap<>();
         _kundenstamm = kundenstamm;
         _medienbestand = medienbestand;
         _protokollierer = new VerleihProtokollierer();
@@ -351,13 +350,12 @@ public class VerleihServiceImpl extends AbstractObservableService
 		return _vormerkkarten.get(medium).istVonKundeVorgemerkt(kunde);
 	}
 	
-
+	// TODO
 	/**
-	 * Prüft, ob der Kunde alle ausgewählten Medien ausleihen darf.
 	 *
-	 * @param kunde der Kunde
-	 * @param medium die Medien
-	 * @return true, wenn der Kunde alle Medien ausleihen darf
+	 * @param kunde
+	 * @param medium
+	 * @return
 	 */
 	
 	private boolean darfAlleAusleihen(Kunde kunde, List<Medium> medien)
@@ -374,10 +372,6 @@ public class VerleihServiceImpl extends AbstractObservableService
 	
 	private boolean darfAusleihen(Kunde kunde, Medium medium)
 	{
-	    if (_vormerkkarten.get(medium) == null)
-	    {
-	        return true;
-	    }
 		Kunde ersterVormerker =_vormerkkarten.get(medium).getErstenVormerker();
 		return ersterVormerker == null || ersterVormerker.equals(kunde);
 	}
@@ -397,6 +391,12 @@ public class VerleihServiceImpl extends AbstractObservableService
 	@Override
 	public List<Vormerkkarte> getVormerkkarten() {
 		return new ArrayList<Vormerkkarte>(_vormerkkarten.values());
+	}
+	
+	@Override
+	public Vormerkkarte getVormerkkarte(Medium medium)
+	{
+		return _vormerkkarten.get(medium);
 	}
 
 	@Override
