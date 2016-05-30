@@ -151,8 +151,9 @@ public class Vormerkkarte {
 	}
 
 	/**
-	 * TODO
-	 * @return
+	 * Prüft, ob die Vormerkliste nicht voll ist
+	 * 
+	 * @return true, wenn die Liste nicht voll ist. False, wenn die Liste voll ist.
 	 */
 	private boolean listeNichtVoll() {
 		return _vormerkliste.size() != vormerkMaximum;

@@ -350,12 +350,13 @@ public class VerleihServiceImpl extends AbstractObservableService
 		return _vormerkkarten.get(medium).istVonKundeVorgemerkt(kunde);
 	}
 	
-	// TODO
+
 	/**
+	 * Prüft, ob der Kunde alle ausgewählten Medien ausleihen darf.
 	 *
-	 * @param kunde
-	 * @param medium
-	 * @return
+	 * @param kunde der Kunde
+	 * @param medium die Medien
+	 * @return true, wenn der Kunde alle Medien ausleihen darf
 	 */
 	
 	private boolean darfAlleAusleihen(Kunde kunde, List<Medium> medien)

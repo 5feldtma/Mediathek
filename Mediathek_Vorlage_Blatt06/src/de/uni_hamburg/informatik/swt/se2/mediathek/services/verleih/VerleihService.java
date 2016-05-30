@@ -211,10 +211,10 @@ public interface VerleihService extends ObservableService
     boolean istVerliehenAn(Kunde kunde, Medium medium);
     
     /**
-     * TODO
-     * @param kunde
-     * @param medium
-     * @return
+     * Prüft, ob Medium vom Kunden vorgemerkt ist.
+     * @param kunde der Kunde
+     * @param medium das Medium
+     * @return true, wenn das Medium vom Kunden vorgemerkt ist, sonst false
      */
     boolean istVomKundenVorgemerkt(Kunde kunde, Medium medium);
 
