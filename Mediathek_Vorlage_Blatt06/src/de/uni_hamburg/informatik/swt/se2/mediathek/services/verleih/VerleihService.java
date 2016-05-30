@@ -60,24 +60,25 @@ public interface VerleihService extends ObservableService
     boolean istVerleihenMoeglich(Kunde kunde, List<Medium> medien);
     
     /**
-     * TODO
-     * @param kunde
-     * @param medien
-     * @return
+     * prüft, ob vormerken für den Kunden möglich ist
+     * @param kunde Der Kunde für den geprüft werden soll
+     * @param medien Die medien
+     * @return true, wenn das Vormerken für diesen Kunden möglich ist, sonst
+     *         false
      */
     boolean istVormerkenMöglich(Kunde kunde, List<Medium> medien);
 
     /**
-     * TODO
-     * @param kunde
-     * @param medien
+     * Merkt, falls möglich, die Medien für den Kunden vor
+     * @param kunde Der Kunde für den vorgemerkt werden soll
+     * @param medien Die medien, die vorgemerkt werden
      */
     void merkeVor(Kunde kunde, List<Medium> medien);
     
     /**
-     * TODO
-     * @param kunde
-     * @param medien
+     * Entfernt, falls vorhanden, die angegebenen Vormerkungen eines Kunden
+     * @param kunde Der Kunde
+     * @param medien Die Medien, dessen Vormerkungen entfernt werden sollen
      */
     void entferneVormerkungen(Kunde kunde, List<Medium> medien);
     
@@ -165,9 +166,11 @@ public interface VerleihService extends ObservableService
     boolean sindAlleNichtVerliehen(List<Medium> medien);
 
     /**
-     * TODO
-     * @param medien
-     * @return
+     * Prüft, ob alle Medien für den Kunden vormerkbar sind
+     * @param medien die Medien
+     * @param kunde der Kunde
+     * 
+     * @return true, wenn alle Medien vormerkbar sind für den Kunden
      */
     boolean sindAlleVormerkbar(Kunde kunde, List<Medium> medien);
     
