@@ -354,6 +354,10 @@ public class VerleihServiceImpl extends AbstractObservableService
 	@Override
 	// TODO überflüssig? eine der beiden entfernen?
 	public boolean istVomKundenVorgemerkt(Kunde kunde, Medium medium) {
+	    if (_vormerkkarten.get(medium) == null)
+	    {
+	        return false;
+	    }
 		return _vormerkkarten.get(medium).istVonKundeVorgemerkt(kunde);
 	}
 	
@@ -396,17 +400,16 @@ public class VerleihServiceImpl extends AbstractObservableService
 	        assert medienImBestand(
 	                medien) : "Vorbedingung verletzt: medienImBestand(medien)";
 
-	                boolean result = true;
+
 	                for (Medium medium : medien)
 	                {
 	                    if (_vormerkkarten.get(medium) != null && !getVormerkkarte(medium).istVormerkbar(kunde) || istVerliehenAn(kunde, medium))
 	                    {
-	                        result = false;
+	                        return false;
 	                        //TODO Nachricht nötig in UI?!
-	                        System.out.println(medium.getTitel() + " ist nicht vormerkbar.");
 	                    }
 	                }
-	                return result;
+	                return true;
 
 	}
 
