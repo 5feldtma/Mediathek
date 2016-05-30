@@ -373,6 +373,10 @@ public class VerleihServiceImpl extends AbstractObservableService
 	
 	private boolean darfAusleihen(Kunde kunde, Medium medium)
 	{
+	    if (_vormerkkarten.get(medium).equals(null))
+	    {
+	        return true;
+	    }
 		Kunde ersterVormerker =_vormerkkarten.get(medium).getErstenVormerker();
 		return ersterVormerker == null || ersterVormerker.equals(kunde);
 	}
