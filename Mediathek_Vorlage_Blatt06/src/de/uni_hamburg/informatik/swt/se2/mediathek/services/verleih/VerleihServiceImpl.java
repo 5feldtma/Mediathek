@@ -221,9 +221,12 @@ public class VerleihServiceImpl extends AbstractObservableService
             _protokollierer.protokolliere(
                     VerleihProtokollierer.EREIGNIS_AUSLEIHE, verleihkarte);
             //TODO protokollieren? nullpointer bei keiner vormerkung?
+            if(_vormerkkarten.get(medium) != null)
+            {
             if (_vormerkkarten.get(medium).getErstenVormerker().equals(kunde))
             {
             	_vormerkkarten.get(medium).entferneVormerkung(kunde);
+            }
             }
         }
         // XXX Was passiert wenn das Protokollieren mitten in der Schleife
@@ -281,8 +284,10 @@ public class VerleihServiceImpl extends AbstractObservableService
     @Override
     public Kunde getEntleiherFuer(Medium medium)
     {
-        assert istVerliehen(
-                medium) : "Vorbedingung verletzt: istVerliehen(medium)";
+        if(!istVerliehen(medium))
+        {
+            return null;
+        }
         Verleihkarte verleihkarte = _verleihkarten.get(medium);
         return verleihkarte.getEntleiher();
     }
