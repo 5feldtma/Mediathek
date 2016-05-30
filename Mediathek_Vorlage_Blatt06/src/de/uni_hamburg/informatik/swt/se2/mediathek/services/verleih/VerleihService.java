@@ -178,14 +178,7 @@ public interface VerleihService extends ObservableService
      */
     boolean sindAlleNichtVerliehen(List<Medium> medien);
 
-    /**
-     * Prüft, ob alle Medien für den Kunden vormerkbar sind
-     * @param medien die Medien
-     * @param kunde der Kunde
-     * 
-     * @return true, wenn alle Medien vormerkbar sind für den Kunden
-     */
-    boolean sindAlleVormerkbar(Kunde kunde, List<Medium> medien);
+
     
     /**
      * Prüft ob alle angegebenen Medien verliehen sind.

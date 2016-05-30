@@ -72,6 +72,7 @@ public class VerleihServiceImpl extends AbstractObservableService
         assert medienbestand != null : "Vorbedingung verletzt: medienbestand  != null";
         assert initialBestand != null : "Vorbedingung verletzt: initialBestand  != null";
         _verleihkarten = erzeugeVerleihkartenBestand(initialBestand);
+        _vormerkkarten = new HashMap<Medium, Vormerkkarte>();
         _kundenstamm = kundenstamm;
         _medienbestand = medienbestand;
         _protokollierer = new VerleihProtokollierer();
@@ -372,7 +373,12 @@ public class VerleihServiceImpl extends AbstractObservableService
 	
 	private boolean darfAusleihen(Kunde kunde, Medium medium)
 	{
-		Kunde ersterVormerker =_vormerkkarten.get(medium).getErstenVormerker();
+	    Vormerkkarte karte = _vormerkkarten.get(medium);
+	    if (karte == null)
+	    {
+	        return true;
+	    }
+		Kunde ersterVormerker = karte.getErstenVormerker();
 		return ersterVormerker == null || ersterVormerker.equals(kunde);
 	}
 	
@@ -384,7 +390,17 @@ public class VerleihServiceImpl extends AbstractObservableService
 	        assert medienImBestand(
 	                medien) : "Vorbedingung verletzt: medienImBestand(medien)";
 
-	        return sindAlleVormerkbar(kunde, medien);
+	                boolean result = true;
+	                for (Medium medium : medien)
+	                {
+	                    if (_vormerkkarten.get(medium) != null && !_vormerkkarten.get(medium).istVormerkbar(kunde))
+	                    {
+	                        result = false;
+	                        //TODO Nachricht nötig in UI?!
+	                        System.out.println(medium.getTitel() + " ist nicht vormerkbar.");
+	                    }
+	                }
+	                return result;
 
 	}
 
@@ -395,27 +411,10 @@ public class VerleihServiceImpl extends AbstractObservableService
 	
 	@Override
 	public Vormerkkarte getVormerkkarte(Medium medium)
-	{
+	{ 
 		return _vormerkkarten.get(medium);
 	}
 
-	@Override
-	public boolean sindAlleVormerkbar(Kunde kunde, List<Medium> medien) {
-		assert kundeImBestand(
-                kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
-		 assert medienImBestand(
-	                medien) : "Vorbedingung verletzt: medienImBestand(medien)";
-	        boolean result = true;
-	        for (Medium medium : medien)
-	        {
-	            if (_vormerkkarten.get(medium) != null && !_vormerkkarten.get(medium).istVormerkbar(kunde))
-	            {
-	                result = false;
-	                //TODO Nachricht nötig in UI?!
-	                System.out.println(medium.getTitel() + " ist nicht vormerkbar.");
-	            }
-	        }
-	        return result;
-	}
+
 
 }
