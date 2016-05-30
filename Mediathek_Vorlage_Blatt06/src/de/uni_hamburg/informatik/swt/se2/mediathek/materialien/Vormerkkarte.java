@@ -36,16 +36,6 @@ public class Vormerkkarte {
 
 	}
 
-	/**
-	 * Gibt eine Liste mit Vormerkern zurück.
-	 * 
-	 * @return die Líste mit Kunden, die das Medium vorgemerkt haben.
-	 * 
-	 * @ensure result != null
-	 */
-	public List<Kunde> getVormerkListe() {
-		return _vormerkliste;
-	}
 	
 	/**
 	 * Gibt den ersten Vormerker zurück
