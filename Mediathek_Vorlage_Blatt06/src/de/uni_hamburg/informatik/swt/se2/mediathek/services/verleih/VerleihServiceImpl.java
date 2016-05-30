@@ -72,6 +72,7 @@ public class VerleihServiceImpl extends AbstractObservableService
         assert medienbestand != null : "Vorbedingung verletzt: medienbestand  != null";
         assert initialBestand != null : "Vorbedingung verletzt: initialBestand  != null";
         _verleihkarten = erzeugeVerleihkartenBestand(initialBestand);
+        _vormerkkarten = new HashMap<>();
         _kundenstamm = kundenstamm;
         _medienbestand = medienbestand;
         _protokollierer = new VerleihProtokollierer();
@@ -373,7 +374,7 @@ public class VerleihServiceImpl extends AbstractObservableService
 	
 	private boolean darfAusleihen(Kunde kunde, Medium medium)
 	{
-	    if (_vormerkkarten.get(medium).equals(null))
+	    if (_vormerkkarten.get(medium) == null)
 	    {
 	        return true;
 	    }
